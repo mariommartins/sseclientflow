@@ -1,10 +1,14 @@
 package com.mariommartins.sseclientflow.domain.usecase
 
-import com.mariommartins.sseclientflow.data.repository.EventRepositoryImpl
 import com.mariommartins.sseclientflow.domain.repository.EventRepository
+import javax.inject.Inject
 
-class UnsubscribeFromEventFlow constructor(
-    private val eventRepository: EventRepository = EventRepositoryImpl(),
-) {
-    fun execute() = eventRepository.clearEventFlow()
+interface UnsubscribeFromEventFlow {
+    operator fun invoke()
+}
+
+class UnsubscribeFromEventFlowImpl @Inject constructor(
+    private val eventRepository: EventRepository
+) : UnsubscribeFromEventFlow {
+    override operator fun invoke() = eventRepository.clearEventFlow()
 }

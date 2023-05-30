@@ -17,6 +17,8 @@ android {
         versionName build_versions.version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'BASE_SSE_URL', '"https://hacker-news.firebaseio.com/v0/updates.json"'
     }
 
     buildTypes {

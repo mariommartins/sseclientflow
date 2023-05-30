@@ -1,7 +1,7 @@
 package com.mariommartins.sseclientflow.data.api.client
 
 import android.util.Log
-import com.mariommartins.sseclientflow.data.api.factories.HttpClientFactory
+import com.mariommartins.sseclientflow.core.di.BASE_URL_NAME
 import com.mariommartins.sseclientflow.data.api.model.SSEEventState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,8 +10,9 @@ import okhttp3.sse.EventSource
 import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Named
 
-private const val BASE_URL = "https://hacker-news.firebaseio.com/v0/updates.json"
 private const val HEADER_NAME = "Accept"
 private const val HEADER_EVENT_STREAM_VALUE = "text/event-stream"
 
@@ -21,9 +22,9 @@ private const val LOG_CLOSED_CONNECTION = "Connection Closed"
 private const val LOG_EVENT_RECEIVED = "Event Received | Data -: "
 private const val LOG_FAILURE = "On Failure -: "
 
-internal class SSERequestClientImpl(
-    private val okHttpClient: OkHttpClient = HttpClientFactory().create().build(),
-    private val baseUrl: String = BASE_URL
+class SSERequestClientImpl @Inject constructor(
+    private val okHttpClient: OkHttpClient,
+    @Named(BASE_URL_NAME) private val baseUrl: String
 ) : SSERequestClient {
     private lateinit var eventFlow: MutableStateFlow<SSEEventState>
     private lateinit var request: Request
