@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "SSEclientFlow"
+rootProject.name = "SSEClientFlow"
 include ':app'
