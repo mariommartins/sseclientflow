@@ -11,6 +11,7 @@ versions.constraintlayout = '2.1.4'
 versions.coroutines = '1.6.4'
 versions.gson = '2.9.0'
 versions.okhttp_sse = '4.10.0'
+versions.hilt = '2.44'
 versions.junit = '4.13.2'
 versions.ext_junit = '1.1.5'
 versions.espresso = '3.5.1'
@@ -29,6 +30,11 @@ deps.support = support
 def kotlin = [:]
 kotlin.coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
 deps.kotlin = kotlin
+
+def di = [:]
+di.hilt = "com.google.dagger:hilt-android:$versions.hilt"
+di.hilt_kapt = "com.google.dagger:hilt-compiler:$versions.hilt"
+deps.di = di
 
 def atsl = [:]
 atsl.junit = "junit:junit:$versions.junit"
