@@ -18,7 +18,7 @@ private const val HEADER_EVENT_STREAM_VALUE = "text/event-stream"
 private const val LOG_TAG = "SSE"
 private const val LOG_OPEN_CONNECTION = "Connection Opened"
 private const val LOG_CLOSED_CONNECTION = "Connection Closed"
-private const val LOG_EVENT_RECEIVED = "On Event Received! Data -: "
+private const val LOG_EVENT_RECEIVED = "Event Received | Data -: "
 private const val LOG_FAILURE = "On Failure -: "
 
 internal class SSERequestClientImpl(

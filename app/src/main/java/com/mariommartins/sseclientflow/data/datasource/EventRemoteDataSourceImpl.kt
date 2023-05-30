@@ -6,9 +6,9 @@ import com.google.gson.JsonSyntaxException
 import com.mariommartins.sseclientflow.data.api.client.SSERequestClient
 import com.mariommartins.sseclientflow.data.api.client.SSERequestClientImpl
 import com.mariommartins.sseclientflow.data.api.model.SSEEventState
-import com.mariommartins.sseclientflow.data.model.EventComplexDataModel
-import com.mariommartins.sseclientflow.data.model.EventDataError
-import com.mariommartins.sseclientflow.data.model.EventDataModel
+import com.mariommartins.sseclientflow.data.model.EventResponse
+import com.mariommartins.sseclientflow.data.model.EventResponseError
+import com.mariommartins.sseclientflow.data.model.EventResponseWrapper
 import com.mariommartins.sseclientflow.domain.model.CallResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -20,20 +20,17 @@ class EventRemoteDataSourceImpl constructor(
 
     private var eventCount = 0
 
-    override suspend fun getEventFlow(): Flow<CallResult<EventDataModel, EventDataError>> =
+    override suspend fun getEventFlow(): Flow<CallResult<EventResponse, EventResponseError>> =
         sseRequestClient.connect().map { apiEvent ->
             eventCount++
             when (apiEvent) {
                 is SSEEventState.OnEvent ->
                     tryParsingAsEventModel(apiEvent)
                 is SSEEventState.OnFailure ->
-                    CallResult.Error(EventDataError.EventFailure(apiEvent.info))
+                    CallResult.Error(EventResponseError.EventFailure(apiEvent.info))
                 is SSEEventState.OnConnectionFailure ->
-                    CallResult.Error(EventDataError.ConnectionFailure(apiEvent.info))
-                else -> {
-                    val result = EventDataModel().apply { type = apiEvent.name }
-                    CallResult.Success(result)
-                }
+                    CallResult.Error(EventResponseError.ConnectionFailure(apiEvent.info))
+                else -> setupEmptyEventResult(apiEvent)
             }
         }
 
@@ -41,14 +38,20 @@ class EventRemoteDataSourceImpl constructor(
 
     private fun tryParsingAsEventModel(
         apiEvent: SSEEventState.OnEvent
-    ): CallResult<EventDataModel, EventDataError> = try {
-        val complexResult = gson.fromJson(apiEvent.data, EventComplexDataModel::class.java)
-        val result = EventDataModel(complexResult?.data?.profiles?.last())
-        result.type = "eventCount: " + eventCount + " | " + apiEvent.type + " | " + apiEvent.name
-        CallResult.Success(result)
-    } catch (e: JsonParseException) {
-        CallResult.Error(EventDataError.ParsingError(e.message))
-    } catch (e: JsonSyntaxException) {
-        CallResult.Error(EventDataError.ParsingError(e.message))
+    ): CallResult<EventResponse, EventResponseError> {
+        return try {
+            val resultWrapper = gson.fromJson(apiEvent.data, EventResponseWrapper::class.java)
+            val result = resultWrapper?.data ?: return setupEmptyEventResult(apiEvent)
+            result.type =
+                "eventCount: " + eventCount + " | " + apiEvent.type + " | " + apiEvent.name
+            CallResult.Success(result)
+        } catch (e: JsonParseException) {
+            CallResult.Error(EventResponseError.ParsingError(e.message))
+        } catch (e: JsonSyntaxException) {
+            CallResult.Error(EventResponseError.ParsingError(e.message))
+        }
     }
+
+    private fun setupEmptyEventResult(apiEvent: SSEEventState) =
+        CallResult.Success(EventResponse().apply { type = apiEvent.name })
 }

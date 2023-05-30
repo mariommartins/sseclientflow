@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace 'com.mariommartins.sseclientflow'
-    compileSdk 33
+    compileSdk build_versions.target_sdk
 
     defaultConfig {
         applicationId "com.mariommartins.sseclientflow"
-        minSdk 26
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        minSdk build_versions.min_sdk
+        targetSdk build_versions.target_sdk
+        versionCode build_versions.version_code
+        versionName build_versions.version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,29 +27,28 @@ android {
         viewBinding true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility build_versions.java
+        targetCompatibility build_versions.java
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = build_versions.java_build
     }
 }
 
 dependencies {
+    implementation deps.support.appcompat
+    implementation deps.support.material
+    implementation deps.support.core_ktx
+    implementation deps.support.activity_ktx
+    implementation deps.support.viewmodel_ktx
+    implementation deps.support.constraintlayout
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation deps.kotlin.coroutines_core
 
+    implementation deps.gson
+    implementation deps.okhttp_sse
 
-    implementation 'androidx.activity:activity-ktx:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.squareup.okhttp3:okhttp-sse:4.10.0'
-
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation deps.atsl.junit
+    androidTestImplementation deps.atsl.ext_junit
+    androidTestImplementation deps.atsl.espresso
 }

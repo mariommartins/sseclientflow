@@ -1,5 +1,6 @@
 package com.mariommartins.sseclientflow.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,7 +28,10 @@ class MainViewModel(
             subscribeToEventFlow
                 .execute()
                 .flowOn(Dispatchers.IO)
-                .catch { e -> _eventTypeLiveData.postValue(e::class.java.name) }
+                .catch { e ->
+                    Log.e("SSE-ERROR", e.toString())
+                    _eventTypeLiveData.postValue(e::class.java.name)
+                }
                 .collect { event ->
                     _eventTypeLiveData.postValue(event.type)
                     _eventContentLiveData.postValue(event.content)
