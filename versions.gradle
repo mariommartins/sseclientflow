@@ -1,0 +1,52 @@
+def versions = [:]
+versions.android_gradle_plugin = '7.0.4'
+versions.kotlin = '1.6.10'
+
+versions.appcompat = '1.6.1'
+versions.material = '1.9.0'
+versions.core_ktx = '1.10.1'
+versions.activity_ktx = '1.7.2'
+versions.viewmodel_ktx = '2.6.1'
+versions.constraintlayout = '2.1.4'
+versions.coroutines = '1.6.4'
+versions.gson = '2.9.0'
+versions.okhttp_sse = '4.10.0'
+versions.junit = '4.13.2'
+versions.ext_junit = '1.1.5'
+versions.espresso = '3.5.1'
+
+def deps = [:]
+
+def support = [:]
+support.appcompat = "androidx.appcompat:appcompat:$versions.appcompat"
+support.material = "com.google.android.material:material:$versions.material"
+support.core_ktx = "androidx.core:core-ktx:$versions.core_ktx"
+support.activity_ktx = "androidx.activity:activity-ktx:$versions.activity_ktx"
+support.viewmodel_ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.viewmodel_ktx"
+support.constraintlayout = "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
+deps.support = support
+
+def kotlin = [:]
+kotlin.coroutines_core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+deps.kotlin = kotlin
+
+def atsl = [:]
+atsl.junit = "junit:junit:$versions.junit"
+atsl.ext_junit = "androidx.test.ext:junit:$versions.ext_junit"
+atsl.espresso = "androidx.test.espresso:espresso-core:$versions.espresso"
+deps.atsl = atsl
+
+deps.gson = "com.google.code.gson:gson:$versions.gson"
+deps.okhttp_sse = "com.squareup.okhttp3:okhttp-sse:$versions.okhttp_sse"
+
+ext.deps = deps
+
+def build_versions = [:]
+build_versions.target_sdk = 33
+build_versions.min_sdk = 26
+build_versions.version_code = 1
+build_versions.version_name = "1.0"
+build_versions.java = JavaVersion.VERSION_1_8
+build_versions.java_build = '1.8'
+
+ext.build_versions = build_versions
