@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.mariommartins.sseclientflow'
+    namespace 'com.sseclientflow'
     compileSdk build_versions.target_sdk
 
     defaultConfig {
-        applicationId "com.mariommartins.sseclientflow"
+        applicationId "com.sseclientflow"
         minSdk build_versions.min_sdk
         targetSdk build_versions.target_sdk
         versionCode build_versions.version_code

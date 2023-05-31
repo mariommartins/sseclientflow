@@ -1,4 +1,4 @@
-package com.mariommartins.sseclientflow
+package com.sseclientflow
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
