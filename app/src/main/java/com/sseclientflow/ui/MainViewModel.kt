@@ -8,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.sseclientflow.domain.usecase.SubscribeToEventFlow
 import com.sseclientflow.domain.usecase.UnsubscribeFromEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(

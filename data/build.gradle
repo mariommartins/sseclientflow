@@ -1,0 +1,24 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
+}
+
+java {
+    sourceCompatibility = build_versions.java
+    targetCompatibility = build_versions.java
+}
+
+dependencies {
+    // Modules
+    implementation project(path: ':domain:public')
+
+    // DI
+    implementation deps.di.dagger
+    kapt deps.di.dagger_kapt
+
+    implementation deps.kotlin.coroutines_core
+
+    implementation deps.gson
+    implementation deps.okhttp_sse
+}

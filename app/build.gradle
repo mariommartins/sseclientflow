@@ -40,6 +40,12 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation project(path: ':data')
+    implementation project(path: ':domain:impl')
+    implementation project(path: ':domain:public')
+
+    // Android support libraries
     implementation deps.support.appcompat
     implementation deps.support.material
     implementation deps.support.core_ktx
@@ -47,8 +53,10 @@ dependencies {
     implementation deps.support.viewmodel_ktx
     implementation deps.support.constraintlayout
 
+    // Coroutines
     implementation deps.kotlin.coroutines_core
 
+    // DI
     implementation deps.di.hilt
     kapt deps.di.hilt_kapt
 
