@@ -1,7 +1,6 @@
 package com.mariommartins.sseclientflow.data.repository
 
 import com.mariommartins.sseclientflow.data.datasource.EventRemoteDataSource
-import com.mariommartins.sseclientflow.data.datasource.EventRemoteDataSourceImpl
 import com.mariommartins.sseclientflow.data.mapper.EventErrorMapper
 import com.mariommartins.sseclientflow.data.mapper.EventMapper
 import com.mariommartins.sseclientflow.domain.model.CallResult
@@ -9,11 +8,12 @@ import com.mariommartins.sseclientflow.domain.model.Event
 import com.mariommartins.sseclientflow.domain.repository.EventRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class EventRepositoryImpl constructor(
-    private val remoteDataSource: EventRemoteDataSource = EventRemoteDataSourceImpl(),
-    private val modelMapper: EventMapper = EventMapper(),
-    private val errorMapper: EventErrorMapper = EventErrorMapper()
+class EventRepositoryImpl @Inject constructor(
+    private val remoteDataSource: EventRemoteDataSource,
+    private val modelMapper: EventMapper,
+    private val errorMapper: EventErrorMapper
 ) : EventRepository {
     override suspend fun getEventFlow(): Flow<Event> =
         remoteDataSource.getEventFlow().map {

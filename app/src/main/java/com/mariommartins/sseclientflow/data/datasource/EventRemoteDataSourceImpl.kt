@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.JsonSyntaxException
 import com.mariommartins.sseclientflow.data.api.client.SSERequestClient
-import com.mariommartins.sseclientflow.data.api.client.SSERequestClientImpl
 import com.mariommartins.sseclientflow.data.api.model.SSEEventState
 import com.mariommartins.sseclientflow.data.model.EventResponse
 import com.mariommartins.sseclientflow.data.model.EventResponseError
@@ -12,12 +11,12 @@ import com.mariommartins.sseclientflow.data.model.EventResponseWrapper
 import com.mariommartins.sseclientflow.domain.model.CallResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class EventRemoteDataSourceImpl constructor(
-    private val sseRequestClient: SSERequestClient = SSERequestClientImpl(),
-    private val gson: Gson = Gson()
+class EventRemoteDataSourceImpl @Inject constructor(
+    private val sseRequestClient: SSERequestClient,
+    private val gson: Gson
 ) : EventRemoteDataSource {
-
     private var eventCount = 0
 
     override suspend fun getEventFlow(): Flow<CallResult<EventResponse, EventResponseError>> =

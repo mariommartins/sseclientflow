@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -15,6 +17,8 @@ android {
         versionName build_versions.version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'BASE_SSE_URL', '"https://hacker-news.firebaseio.com/v0/updates.json"'
     }
 
     buildTypes {
@@ -45,10 +49,18 @@ dependencies {
 
     implementation deps.kotlin.coroutines_core
 
+    implementation deps.di.hilt
+    kapt deps.di.hilt_kapt
+
     implementation deps.gson
     implementation deps.okhttp_sse
 
     testImplementation deps.atsl.junit
     androidTestImplementation deps.atsl.ext_junit
     androidTestImplementation deps.atsl.espresso
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes true
 }

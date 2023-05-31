@@ -7,16 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mariommartins.sseclientflow.domain.usecase.SubscribeToEventFlow
 import com.mariommartins.sseclientflow.domain.usecase.UnsubscribeFromEventFlow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-    private val subscribeToEventFlow: SubscribeToEventFlow = SubscribeToEventFlow(),
-    private val unsubscribeFromEventFlow: UnsubscribeFromEventFlow = UnsubscribeFromEventFlow()
-): ViewModel() {
-
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val subscribeToEventFlow: SubscribeToEventFlow,
+    private val unsubscribeFromEventFlow: UnsubscribeFromEventFlow
+) : ViewModel() {
     private val _eventContentLiveData = MutableLiveData<String>()
     val eventContentLiveData: LiveData<String> get() = _eventContentLiveData
 
@@ -25,8 +27,7 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            subscribeToEventFlow
-                .execute()
+            subscribeToEventFlow()
                 .flowOn(Dispatchers.IO)
                 .catch { e ->
                     Log.e("SSE-ERROR", e.toString())
@@ -41,6 +42,6 @@ class MainViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        unsubscribeFromEventFlow.execute()
+        unsubscribeFromEventFlow()
     }
 }
