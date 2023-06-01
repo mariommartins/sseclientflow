@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sseclientflow.R
@@ -32,19 +33,19 @@ fun MainContainer(eventHistory: List<Event>) {
     Row(modifier = Modifier.padding(all = 10.dp)) {
         Image(
             painter = painterResource(R.drawable.ic_android_green),
-            contentDescription = "Android image",
+            contentDescription = stringResource(id = R.string.main_image_content_description),
             modifier = Modifier
-                .size(40.dp)
+                .size(60.dp)
                 .clip(CircleShape)
                 .border(1.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                .padding(all = 8.dp)
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Column {
             Text(
-                text = "Events:",
+                text = stringResource(id = R.string.main_title),
                 color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.titleLarge
             )
             Spacer(modifier = Modifier.height(4.dp))
             Surface(
