@@ -1,10 +1,11 @@
-package com.sseclientflow.ui
+package com.sseclientflow.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sseclientflow.domain.log.SystemLogger
+import com.sseclientflow.domain.model.Event
 import com.sseclientflow.domain.usecase.SubscribeToEventFlow
 import com.sseclientflow.domain.usecase.UnsubscribeFromEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,11 +23,8 @@ class MainViewModel @Inject constructor(
     private val unsubscribeFromEventFlow: UnsubscribeFromEventFlow,
     private val systemLogger: SystemLogger
 ) : ViewModel() {
-    private val _eventContentLiveData = MutableLiveData<String>()
-    val eventContentLiveData: LiveData<String> get() = _eventContentLiveData
-
-    private val _eventTypeLiveData = MutableLiveData<String>()
-    val eventTypeLiveData: LiveData<String> get() = _eventTypeLiveData
+    private val _eventsLiveData = MutableLiveData<List<Event>>(emptyList())
+    val eventsLiveData: LiveData<List<Event>> get() = _eventsLiveData
 
     init {
         viewModelScope.launch {
@@ -34,11 +32,11 @@ class MainViewModel @Inject constructor(
                 .flowOn(Dispatchers.IO)
                 .catch { e ->
                     systemLogger.logError(ERROR_TITLE, e.toString())
-                    _eventTypeLiveData.postValue(e::class.java.name)
+                    _eventsLiveData
+                        .apply { postValue(value?.plus(Event(type = e::class.java.name))) }
                 }
                 .collect { event ->
-                    _eventTypeLiveData.postValue(event.type)
-                    _eventContentLiveData.postValue(event.content)
+                    _eventsLiveData.apply { postValue(value?.plus(event)) }
                 }
         }
     }
