@@ -4,7 +4,7 @@ versions.kotlin = '1.6.10'
 
 versions.appcompat = '1.6.1'
 versions.material = '1.9.0'
-versions.core_ktx = '1.10.1'
+versions.core_ktx = '1.9.0'
 versions.activity_ktx = '1.7.2'
 versions.viewmodel_ktx = '2.6.1'
 versions.constraintlayout = '2.1.4'
@@ -16,6 +16,8 @@ versions.dagger = '2.46.1'
 versions.junit = '4.13.2'
 versions.ext_junit = '1.1.5'
 versions.espresso = '3.5.1'
+versions.compose_bom = '2023.05.01'
+versions.compose_activity = '1.7.2'
 
 def deps = [:]
 
@@ -39,6 +41,15 @@ di.dagger = "com.google.dagger:dagger:$versions.dagger"
 di.dagger_kapt = "com.google.dagger:dagger-compiler:$versions.dagger"
 deps.di = di
 
+def compose = [:]
+compose.bom = "androidx.compose:compose-bom:$versions.compose_bom"
+compose.livedata = "androidx.compose.runtime:runtime-livedata"
+compose.activity = "androidx.activity:activity-compose:$versions.compose_activity"
+compose.material3 = "androidx.compose.material3:material3"
+compose.tooling = "androidx.compose.ui:ui-tooling"
+compose.preview = "androidx.compose.ui:ui-tooling-preview"
+deps.compose = compose
+
 def atsl = [:]
 atsl.junit = "junit:junit:$versions.junit"
 atsl.ext_junit = "androidx.test.ext:junit:$versions.ext_junit"
@@ -58,5 +69,6 @@ build_versions.version_name = "1.0"
 build_versions.java = JavaVersion.VERSION_1_8
 build_versions.java_build = '1.8'
 build_versions.jvm = '1.8'
+build_versions.kotlinCompilerExtensionVersion = '1.4.7'
 
 ext.build_versions = build_versions

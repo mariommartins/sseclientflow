@@ -19,12 +19,12 @@ import okio.IOException
 const val SSE_BASE_URL = "SSE_TEST_API_BASE_URL_NAME"
 private const val HEADER_NAME = "Accept"
 private const val HEADER_EVENT_STREAM_VALUE = "text/event-stream"
-
 private const val LOG_TAG = "SSE"
 private const val LOG_OPEN_CONNECTION = "Connection Opened"
 private const val LOG_CLOSED_CONNECTION = "Connection Closed"
 private const val LOG_EVENT_RECEIVED = "Event Received | Data -: "
 private const val LOG_FAILURE = "On Failure -: "
+private const val EMPTY_DATA_BODY = "null"
 
 internal class SSERequestClientImpl @Inject constructor(
     private val okHttpClient: OkHttpClient,
@@ -56,7 +56,7 @@ internal class SSERequestClientImpl @Inject constructor(
             ) {
                 super.onEvent(eventSource, id, type, data)
                 systemLogger.log(LOG_TAG, LOG_EVENT_RECEIVED + data)
-                eventFlow.value = SSEEventState.OnEvent(type, data)
+                if (data != EMPTY_DATA_BODY) eventFlow.value = SSEEventState.OnEvent(type, data)
             }
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {

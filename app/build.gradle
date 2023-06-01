@@ -39,6 +39,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = build_versions.kotlinCompilerExtensionVersion
     }
     compileOptions {
         sourceCompatibility build_versions.java
@@ -62,6 +66,14 @@ dependencies {
     implementation deps.support.activity_ktx
     implementation deps.support.viewmodel_ktx
     implementation deps.support.constraintlayout
+
+    // Compose
+    implementation platform(deps.compose.bom)
+    implementation deps.compose.livedata
+    implementation deps.compose.activity
+    implementation deps.compose.material3
+    implementation deps.compose.preview
+    debugImplementation deps.compose.tooling
 
     // Coroutines
     implementation deps.kotlin.coroutines_core
