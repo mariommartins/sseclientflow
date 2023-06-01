@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SSEClientFlow"
 include ':app'
+include ':data'
+include ':domain:impl'
+include ':domain:public'

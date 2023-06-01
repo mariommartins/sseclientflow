@@ -5,12 +5,22 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+def sensitiveProperty(name) {
+    return getProperty('sensitive.properties', name)
+}
+
+private def getProperty(fileName, name) {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file(fileName).newDataInputStream())
+    return "\"${properties.getProperty(name)}\""
+}
+
 android {
-    namespace 'com.mariommartins.sseclientflow'
+    namespace 'com.sseclientflow'
     compileSdk build_versions.target_sdk
 
     defaultConfig {
-        applicationId "com.mariommartins.sseclientflow"
+        applicationId "com.sseclientflow"
         minSdk build_versions.min_sdk
         targetSdk build_versions.target_sdk
         versionCode build_versions.version_code
@@ -18,7 +28,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String', 'BASE_SSE_URL', '"https://hacker-news.firebaseio.com/v0/updates.json"'
+        buildConfigField 'String', 'SSE_BASE_URL', sensitiveProperty('SSE_BASE_URL')
     }
 
     buildTypes {
@@ -40,6 +50,12 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation project(path: ':data')
+    implementation project(path: ':domain:impl')
+    implementation project(path: ':domain:public')
+
+    // Android support libraries
     implementation deps.support.appcompat
     implementation deps.support.material
     implementation deps.support.core_ktx
@@ -47,13 +63,12 @@ dependencies {
     implementation deps.support.viewmodel_ktx
     implementation deps.support.constraintlayout
 
+    // Coroutines
     implementation deps.kotlin.coroutines_core
 
+    // DI
     implementation deps.di.hilt
     kapt deps.di.hilt_kapt
-
-    implementation deps.gson
-    implementation deps.okhttp_sse
 
     testImplementation deps.atsl.junit
     androidTestImplementation deps.atsl.ext_junit
