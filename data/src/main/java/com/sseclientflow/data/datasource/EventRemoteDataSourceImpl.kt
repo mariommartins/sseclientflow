@@ -13,7 +13,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class EventRemoteDataSourceImpl @Inject constructor(
+internal class EventRemoteDataSourceImpl @Inject constructor(
     private val sseRequestClient: SSERequestClient,
     private val gson: Gson
 ) : EventRemoteDataSource {

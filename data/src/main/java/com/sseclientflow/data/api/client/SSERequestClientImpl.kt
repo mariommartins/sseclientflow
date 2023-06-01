@@ -1,7 +1,7 @@
 package com.sseclientflow.data.api.client
 
 import com.sseclientflow.data.api.model.SSEEventState
-import com.sseclientflow.data.di.BASE_URL_NAME
+import com.sseclientflow.domain.log.SystemLogger
 import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +16,7 @@ import okhttp3.sse.EventSourceListener
 import okhttp3.sse.EventSources
 import okio.IOException
 
+const val SSE_BASE_URL = "SSE_TEST_API_BASE_URL_NAME"
 private const val HEADER_NAME = "Accept"
 private const val HEADER_EVENT_STREAM_VALUE = "text/event-stream"
 
@@ -25,9 +26,10 @@ private const val LOG_CLOSED_CONNECTION = "Connection Closed"
 private const val LOG_EVENT_RECEIVED = "Event Received | Data -: "
 private const val LOG_FAILURE = "On Failure -: "
 
-class SSERequestClientImpl @Inject constructor(
+internal class SSERequestClientImpl @Inject constructor(
     private val okHttpClient: OkHttpClient,
-    @Named(BASE_URL_NAME) private val baseUrl: String
+    @Named(SSE_BASE_URL) private val baseUrl: String,
+    private val systemLogger: SystemLogger
 ) : SSERequestClient {
     private lateinit var eventFlow: MutableStateFlow<SSEEventState>
     private lateinit var request: Request
@@ -36,13 +38,13 @@ class SSERequestClientImpl @Inject constructor(
         get() = object : EventSourceListener() {
             override fun onOpen(eventSource: EventSource, response: Response) {
                 super.onOpen(eventSource, response)
-//                Log.d(LOG_TAG, LOG_OPEN_CONNECTION)
+                systemLogger.log(LOG_TAG, LOG_OPEN_CONNECTION)
                 eventFlow.value = SSEEventState.OnOpen
             }
 
             override fun onClosed(eventSource: EventSource) {
                 super.onClosed(eventSource)
-//                Log.d(LOG_TAG, LOG_CLOSED_CONNECTION)
+                systemLogger.log(LOG_TAG, LOG_CLOSED_CONNECTION)
                 eventFlow.value = SSEEventState.OnClosed
             }
 
@@ -53,14 +55,14 @@ class SSERequestClientImpl @Inject constructor(
                 data: String
             ) {
                 super.onEvent(eventSource, id, type, data)
-//                Log.d(LOG_TAG, LOG_EVENT_RECEIVED + data)
+                systemLogger.log(LOG_TAG, LOG_EVENT_RECEIVED + data)
                 eventFlow.value = SSEEventState.OnEvent(type, data)
             }
 
             override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
                 super.onFailure(eventSource, t, response)
                 (LOG_FAILURE + t?.message + response).let { failureInfo ->
-//                    Log.d(LOG_TAG, failureInfo)
+                    systemLogger.log(LOG_TAG, failureInfo)
                     eventFlow.value = SSEEventState.OnFailure(failureInfo, response?.code)
                 }
             }

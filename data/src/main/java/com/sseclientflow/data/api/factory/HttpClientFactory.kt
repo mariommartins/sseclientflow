@@ -1,9 +1,9 @@
-package com.sseclientflow.data.api.factories
+package com.sseclientflow.data.api.factory
 
 import com.sseclientflow.data.api.configuration.ApiConfiguration
 import okhttp3.OkHttpClient
 
-class HttpClientFactory constructor(
+internal class HttpClientFactory constructor(
     private val apiConfiguration: ApiConfiguration = ApiConfiguration()
 ) {
     fun create(): OkHttpClient.Builder {

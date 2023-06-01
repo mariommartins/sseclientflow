@@ -6,6 +6,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@Module
+@Module(
+    includes = [
+        DomainModule::class,
+        DataModule::class
+    ]
+)
 @InstallIn(SingletonComponent::class)
-interface HiltModuleBinder : DomainModule, DataModule
+interface HiltModuleBinder

@@ -1,6 +1,6 @@
 package com.sseclientflow.data.model
 
-sealed class EventResponseError {
+internal sealed class EventResponseError {
     data class ParsingError(val info: String?) : EventResponseError()
     data class EventFailure(val info: String) : EventResponseError()
     data class ConnectionFailure(val info: String) : EventResponseError()

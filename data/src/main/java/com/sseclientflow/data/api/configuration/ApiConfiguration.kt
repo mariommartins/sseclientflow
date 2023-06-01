@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit
 
 private const val DEFAULT_TIMEOUT = 3L
 
-data class ApiConfiguration(
+internal data class ApiConfiguration(
     val retry: Retry = Retry(),
     val timeout: Timeout = Timeout(),
 ) {

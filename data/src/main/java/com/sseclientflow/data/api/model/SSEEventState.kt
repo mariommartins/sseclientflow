@@ -1,6 +1,6 @@
 package com.sseclientflow.data.api.model
 
-sealed class SSEEventState {
+internal sealed class SSEEventState {
     object Empty : SSEEventState()
     object OnCreated : SSEEventState()
     object OnOpen : SSEEventState()

@@ -8,14 +8,14 @@ import dagger.Binds
 import dagger.Module
 
 @Module
-interface DomainModule {
+abstract class DomainModule {
     @Binds
-    fun bindSubscribeToEventFlow(
+    internal abstract fun bindSubscribeToEventFlow(
         subscribeToEventFlow: SubscribeToEventFlowImpl
     ): SubscribeToEventFlow
 
     @Binds
-    fun bindUnsubscribeFromEventFlow(
+    internal abstract fun bindUnsubscribeFromEventFlow(
         unsubscribeFromEventFlow: UnsubscribeFromEventFlowImpl
     ): UnsubscribeFromEventFlow
 }
