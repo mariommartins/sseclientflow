@@ -1,7 +1,7 @@
 package com.sseclientflow.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sseclientflow.domain.log.SystemLogger
@@ -23,8 +23,8 @@ class MainViewModel @Inject constructor(
     private val unsubscribeFromEventFlow: UnsubscribeFromEventFlow,
     private val systemLogger: SystemLogger
 ) : ViewModel() {
-    private val _eventsLiveData = MutableLiveData<List<Event>>(emptyList())
-    val eventsLiveData: LiveData<List<Event>> get() = _eventsLiveData
+    private val _eventsState = mutableStateOf<List<Event>>(emptyList())
+    val eventsState: State<List<Event>> get() = _eventsState
 
     init {
         viewModelScope.launch {
@@ -32,12 +32,9 @@ class MainViewModel @Inject constructor(
                 .flowOn(Dispatchers.IO)
                 .catch { e ->
                     systemLogger.logError(ERROR_TITLE, e.toString())
-                    _eventsLiveData
-                        .apply { postValue(value?.plus(Event(type = e::class.java.name))) }
+                    _eventsState.apply { value = value.plus(Event(type = e::class.java.name)) }
                 }
-                .collect { event ->
-                    _eventsLiveData.apply { postValue(value?.plus(event)) }
-                }
+                .collect { event -> _eventsState.apply { value = value.plus(event) } }
         }
     }
 
