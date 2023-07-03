@@ -26,7 +26,7 @@ This is a single-activity app that opens a SSE connection to a test Server and u
 
 ## More Details
 - This was used as the sample project for a droidcon 2023 talk that can be checked at [this link](https://docs.google.com/presentation/d/1aZBKHHjuAkEYtO0UuAugR8ktuk07Bp8u2GelgjrK8BA/edit?usp=sharing)  
-- There is a published article on the Medium platform discussing the theme of this Sample project at [this link](https://blog.devgenius.io/from-mockito-to-mockk-259017b1ef50)  
+- There is a published article on the Medium platform discussing the theme of this Sample project at [this link](https://medium.com/@gutoomota/how-to-build-a-clean-sseclient-flow-69c623fcc9e2)  
 - The Api used for testing in this implementation was found publicly in [this repository](https://github.com/manoamaro/another-hacker-news-client)
 
 Please **contact me** if you have any questions!  
